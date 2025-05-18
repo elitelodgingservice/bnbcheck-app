@@ -1,35 +1,50 @@
 import React, { useState } from 'react';
 
+import React, { useState } from 'react';
+
 export default function BNBCheckApp() {
   const [city, setCity] = useState('');
-  const [message, setMessage] = useState('');
+  const [result, setResult] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, just pretend every city is okay
-    setMessage(`✅ ${city} allows short-term rentals (check local ordinances to confirm).`);
+
+    // Simulate result — this will be replaced with real logic later
+    if (city.toLowerCase().includes('nashville')) {
+      setResult('❌ Short-term rentals are restricted in Nashville.');
+    } else {
+      setResult('✅ This city may allow short-term rentals. Double-check local laws.');
+    }
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+    <div style={{ fontFamily: 'sans-serif', padding: '2rem' }}>
       <h1>Welcome to BNB Check</h1>
       <p>Answer a few questions to check short-term rental rules in your area.</p>
+
       <form onSubmit={handleSubmit}>
         <label>
-          Where is this property?
-          <br />
+          <strong>Where is this property?</strong><br />
           <input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder="e.g. Austin, TX"
-            style={{ marginTop: '5px', padding: '5px', width: '200px' }}
+            placeholder="Enter a city or zip"
+            required
+            style={{ padding: '0.5rem', width: '300px', marginTop: '0.5rem' }}
           />
         </label>
         <br /><br />
-        <button type="submit">Check</button>
+        <button type="submit" style={{ padding: '0.5rem 1rem' }}>
+          Check Rules
+        </button>
       </form>
-      {message && <p style={{ marginTop: '20px' }}>{message}</p>}
+
+      {result && (
+        <div style={{ marginTop: '1rem', fontWeight: 'bold' }}>
+          {result}
+        </div>
+      )}
     </div>
   );
 }
