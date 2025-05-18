@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function BNBCheckApp() {
-  const [city, setCity] = useState('');
+   const [city, setCity] = useState('');
   const [result, setResult] = useState('');
 
   const handleSubmit = (e) => {
