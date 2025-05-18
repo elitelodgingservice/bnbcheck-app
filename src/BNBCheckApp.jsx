@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 export default function BNBCheckApp() {
-   const [city, setCity] = useState('');
+  const [city, setCity] = useState('');
   const [result, setResult] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulate result — this will be replaced with real logic later
+    // Simulated result logic
     if (city.toLowerCase().includes('nashville')) {
       setResult('❌ Short-term rentals are restricted in Nashville.');
     } else {
