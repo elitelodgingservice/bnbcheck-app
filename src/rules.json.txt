@@ -1,12 +1,12 @@
 {
   "austin": "⚠️ Austin requires a license and has zone restrictions for STRs.",
   "orlando": "✅ STRs are allowed in designated zones in Orlando. Check HOA rules.",
-  "denver": "✅ STRs are allowed but only in primary residences. License required.",
-  "los angeles": "❌ STRs are highly restricted in Los Angeles outside of primary residences.",
-  "miami": "⚠️ Miami allows STRs in certain zones with strict enforcement.",
-  "nashville": "❌ Most STRs are banned in residential zones unless grandfathered.",
+  "nashville": "❌ Nashville has strict zoning. Most STRs are not allowed without permits.",
+  "los angeles": "⚠️ Los Angeles requires registration and has strict enforcement.",
+  "miami": "❌ Miami-Dade has major restrictions. STRs are banned in many zones.",
+  "denver": "✅ Denver allows STRs only at a host’s primary residence.",
+  "new york": "❌ STRs are heavily restricted. Only 30+ day stays allowed without live-in host.",
   "dallas": "⚠️ Dallas is reviewing STR regulations. Check with city planning.",
   "san diego": "✅ STRs allowed with registration and compliance with local caps.",
-  "new york": "❌ STRs under 30 days are heavily restricted unless host is present.",
   "chicago": "⚠️ This city may allow STRs, but check local laws and HOA rules to be sure."
 }
