@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import rules from './rules.json';
+import rules from "./rules.json";
 import zipcodes from './zipcodes.json';
 
 export default function BNBCheckApp() {
