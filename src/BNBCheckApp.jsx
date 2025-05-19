@@ -3,46 +3,56 @@ import rules from './rules.json';
 import zipcodes from './zipcodes.json';
 
 export default function BNBCheckApp() {
-  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
   const [result, setResult] = useState('');
-  const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    setCities(Object.keys(rules));
-  }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const input = city.trim().toLowerCase();
+    const input = address.trim();
 
     if (!input) {
-      setError('Please enter a city or zip code.');
+      setError('Please enter a full address.');
       setResult('');
       return;
     }
 
     setLoading(true);
-    setResult('');
     setError('');
+    setResult('');
 
     setTimeout(() => {
-      let rule = '';
-      if (/^\d{5}$/.test(input)) {
-        const matchedCity = zipcodes[input];
-        rule = matchedCity ? rules[matchedCity] : null;
-      } else {
-        rule = rules[input];
+      const zipMatch = input.match(/\b\d{5}\b/);
+      let rule = null;
+
+      if (zipMatch) {
+        const zip = zipMatch[0];
+        const city = zipcodes[zip];
+        if (city) {
+          rule = rules[city.toLowerCase()];
+        }
       }
 
-      if (rule) {
-        setResult(rule);
-      } else {
-        setResult('⚠️ We couldn’t find info for this location. Please verify local STR laws.');
+      if (!rule) {
+        const cityMatch = input.match(/\b[a-zA-Z\s]+\b/gi);
+        if (cityMatch) {
+          for (let part of cityMatch) {
+            const lookup = part.trim().toLowerCase();
+            if (rules[lookup]) {
+              rule = rules[lookup];
+              break;
+            }
+          }
+        }
       }
 
       setLoading(false);
+      if (rule) {
+        setResult(rule);
+      } else {
+        setResult('⚠️ We couldn’t find rules for this location. Please check with your city or HOA.');
+      }
     }, 1200);
   };
 
@@ -58,15 +68,15 @@ export default function BNBCheckApp() {
     >
       <h1 style={{ color: '#2c3e50', fontSize: 'clamp(1.5rem, 5vw, 2.2rem)' }}>BNB Check</h1>
       <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', marginBottom: '1.5rem' }}>
-        Enter a city or zip code to check short-term rental rules.
+        Enter a full address to check short-term rental rules.
       </p>
 
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="e.g. Austin or 78701"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="123 Main St, Austin TX 78701"
           style={{
             padding: '0.75rem',
             width: '100%',
