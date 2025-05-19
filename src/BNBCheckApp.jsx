@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import rules from './rules.json';
+import zipcodes from './zipcodes.json';
 
 export default function BNBCheckApp() {
   const [city, setCity] = useState('');
@@ -14,10 +15,10 @@ export default function BNBCheckApp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const trimmedCity = city.trim().toLowerCase();
+    const input = city.trim().toLowerCase();
 
-    if (!trimmedCity) {
-      setError('Please enter a city name.');
+    if (!input) {
+      setError('Please enter a city or zip code.');
       setResult('');
       return;
     }
@@ -27,12 +28,20 @@ export default function BNBCheckApp() {
     setError('');
 
     setTimeout(() => {
-      const rule = rules[trimmedCity];
+      let rule = '';
+      if (/^\d{5}$/.test(input)) {
+        const matchedCity = zipcodes[input];
+        rule = matchedCity ? rules[matchedCity] : null;
+      } else {
+        rule = rules[input];
+      }
+
       if (rule) {
         setResult(rule);
       } else {
-        setResult('⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.');
+        setResult('⚠️ We couldn’t find info for this location. Please verify local STR laws.');
       }
+
       setLoading(false);
     }, 1200);
   };
@@ -45,21 +54,19 @@ export default function BNBCheckApp() {
         maxWidth: '600px',
         margin: 'auto',
         textAlign: 'center',
-        boxSizing: 'border-box',
       }}
     >
       <h1 style={{ color: '#2c3e50', fontSize: 'clamp(1.5rem, 5vw, 2.2rem)' }}>BNB Check</h1>
       <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', marginBottom: '1.5rem' }}>
-        Curious if short-term rentals are allowed in your city? Let’s find out.
+        Enter a city or zip code to check short-term rental rules.
       </p>
 
       <form onSubmit={handleSubmit}>
         <input
-          list="city-list"
           type="text"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          placeholder="Start typing a city..."
+          placeholder="e.g. Austin or 78701"
           style={{
             padding: '0.75rem',
             width: '100%',
@@ -69,11 +76,6 @@ export default function BNBCheckApp() {
             boxSizing: 'border-box',
           }}
         />
-        <datalist id="city-list">
-          {cities.map((c) => (
-            <option key={c} value={c} />
-          ))}
-        </datalist>
 
         <button
           type="submit"
@@ -87,7 +89,6 @@ export default function BNBCheckApp() {
             borderRadius: '6px',
             cursor: 'pointer',
             width: '100%',
-            maxWidth: '100%',
           }}
         >
           Check Rules
@@ -95,26 +96,13 @@ export default function BNBCheckApp() {
       </form>
 
       {error && (
-        <div
-          style={{
-            marginTop: '1rem',
-            color: 'red',
-            fontWeight: 'bold',
-            fontSize: '0.95rem',
-          }}
-        >
+        <div style={{ marginTop: '1rem', color: 'red', fontWeight: 'bold' }}>
           ⚠️ {error}
         </div>
       )}
 
       {loading && (
-        <div
-          style={{
-            marginTop: '1.5rem',
-            fontSize: '1rem',
-            color: '#888',
-          }}
-        >
+        <div style={{ marginTop: '1.5rem', fontSize: '1rem', color: '#888' }}>
           ⏳ Checking rules...
         </div>
       )}

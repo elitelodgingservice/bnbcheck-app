@@ -1,0 +1,12 @@
+{
+  "78701": "austin",
+  "32801": "orlando",
+  "33101": "miami",
+  "37206": "nashville",
+  "90001": "los angeles",
+  "80202": "denver",
+  "10001": "new york",
+  "75201": "dallas",
+  "60601": "chicago",
+  "92101": "san diego"
+}
