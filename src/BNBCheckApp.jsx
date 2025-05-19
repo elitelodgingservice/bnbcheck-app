@@ -5,6 +5,7 @@ export default function BNBCheckApp() {
   const [city, setCity] = useState('');
   const [result, setResult] = useState('');
   const [cities, setCities] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setCities(Object.keys(rules));
@@ -12,14 +13,19 @@ export default function BNBCheckApp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
+    setResult('');
     const lookup = city.trim().toLowerCase();
-    const rule = rules[lookup];
 
-    if (rule) {
-      setResult(rule);
-    } else {
-      setResult("⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.");
-    }
+    setTimeout(() => {
+      const rule = rules[lookup];
+      if (rule) {
+        setResult(rule);
+      } else {
+        setResult("⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.");
+      }
+      setLoading(false);
+    }, 1200);
   };
 
   return (
@@ -49,7 +55,6 @@ export default function BNBCheckApp() {
           style={{
             padding: '0.75rem',
             width: '100%',
-            maxWidth: '100%',
             fontSize: '1rem',
             borderRadius: '4px',
             border: '1px solid #ccc',
@@ -74,14 +79,19 @@ export default function BNBCheckApp() {
             borderRadius: '4px',
             cursor: 'pointer',
             width: '100%',
-            maxWidth: '100%',
           }}
         >
           Check Rules
         </button>
       </form>
 
-      {result && (
+      {loading && (
+        <div style={{ marginTop: '1.5rem', fontSize: '1rem', color: '#888' }}>
+          ⏳ Checking rules...
+        </div>
+      )}
+
+      {result && !loading && (
         <div
           style={{
             marginTop: '1.5rem',
