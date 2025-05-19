@@ -16,7 +16,6 @@ export default function BNBCheckApp() {
     e.preventDefault();
     const trimmedCity = city.trim().toLowerCase();
 
-    // Basic validation
     if (!trimmedCity) {
       setError('Please enter a city name.');
       setResult('');
@@ -29,13 +28,11 @@ export default function BNBCheckApp() {
 
     setTimeout(() => {
       const rule = rules[trimmedCity];
-
       if (rule) {
         setResult(rule);
       } else {
         setResult('⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.');
       }
-
       setLoading(false);
     }, 1200);
   };
@@ -44,14 +41,15 @@ export default function BNBCheckApp() {
     <div
       style={{
         fontFamily: 'Arial, sans-serif',
-        padding: '2rem',
-        maxWidth: '500px',
+        padding: '1.5rem',
+        maxWidth: '600px',
         margin: 'auto',
         textAlign: 'center',
+        boxSizing: 'border-box',
       }}
     >
-      <h1 style={{ color: '#2c3e50', fontSize: '2rem' }}>BNB Check</h1>
-      <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
+      <h1 style={{ color: '#2c3e50', fontSize: 'clamp(1.5rem, 5vw, 2.2rem)' }}>BNB Check</h1>
+      <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', marginBottom: '1.5rem' }}>
         Curious if short-term rentals are allowed in your city? Let’s find out.
       </p>
 
@@ -66,7 +64,7 @@ export default function BNBCheckApp() {
             padding: '0.75rem',
             width: '100%',
             fontSize: '1rem',
-            borderRadius: '4px',
+            borderRadius: '6px',
             border: '1px solid #ccc',
             boxSizing: 'border-box',
           }}
@@ -76,19 +74,20 @@ export default function BNBCheckApp() {
             <option key={c} value={c} />
           ))}
         </datalist>
-        <br />
+
         <button
           type="submit"
           style={{
             marginTop: '1rem',
-            padding: '0.75rem 1.5rem',
+            padding: '0.8rem 1.2rem',
             backgroundColor: '#007bff',
             color: 'white',
             fontSize: '1rem',
             border: 'none',
-            borderRadius: '4px',
+            borderRadius: '6px',
             cursor: 'pointer',
             width: '100%',
+            maxWidth: '100%',
           }}
         >
           Check Rules
@@ -101,6 +100,7 @@ export default function BNBCheckApp() {
             marginTop: '1rem',
             color: 'red',
             fontWeight: 'bold',
+            fontSize: '0.95rem',
           }}
         >
           ⚠️ {error}
@@ -108,7 +108,13 @@ export default function BNBCheckApp() {
       )}
 
       {loading && (
-        <div style={{ marginTop: '1.5rem', fontSize: '1rem', color: '#888' }}>
+        <div
+          style={{
+            marginTop: '1.5rem',
+            fontSize: '1rem',
+            color: '#888',
+          }}
+        >
           ⏳ Checking rules...
         </div>
       )}
@@ -120,6 +126,7 @@ export default function BNBCheckApp() {
             fontWeight: 'bold',
             fontSize: '1.1rem',
             color: '#27ae60',
+            lineHeight: '1.4',
           }}
         >
           {result}
