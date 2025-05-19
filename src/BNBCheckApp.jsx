@@ -6,6 +6,7 @@ export default function BNBCheckApp() {
   const [result, setResult] = useState('');
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     setCities(Object.keys(rules));
@@ -13,17 +14,28 @@ export default function BNBCheckApp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const trimmedCity = city.trim().toLowerCase();
+
+    // Basic validation
+    if (!trimmedCity) {
+      setError('Please enter a city name.');
+      setResult('');
+      return;
+    }
+
     setLoading(true);
     setResult('');
-    const lookup = city.trim().toLowerCase();
+    setError('');
 
     setTimeout(() => {
-      const rule = rules[lookup];
+      const rule = rules[trimmedCity];
+
       if (rule) {
         setResult(rule);
       } else {
-        setResult("⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.");
+        setResult('⚠️ This city may allow STRs, but check local laws and HOA rules to be sure.');
       }
+
       setLoading(false);
     }, 1200);
   };
@@ -36,29 +48,26 @@ export default function BNBCheckApp() {
         maxWidth: '500px',
         margin: 'auto',
         textAlign: 'center',
-        boxSizing: 'border-box',
       }}
     >
-      <h1 style={{ color: '#2c3e50', fontSize: '2rem', marginBottom: '1rem' }}>BNB Check</h1>
+      <h1 style={{ color: '#2c3e50', fontSize: '2rem' }}>BNB Check</h1>
       <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
         Curious if short-term rentals are allowed in your city? Let’s find out.
       </p>
 
-      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <form onSubmit={handleSubmit}>
         <input
           list="city-list"
           type="text"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           placeholder="Start typing a city..."
-          required
           style={{
             padding: '0.75rem',
             width: '100%',
             fontSize: '1rem',
             borderRadius: '4px',
             border: '1px solid #ccc',
-            marginBottom: '1rem',
             boxSizing: 'border-box',
           }}
         />
@@ -71,6 +80,7 @@ export default function BNBCheckApp() {
         <button
           type="submit"
           style={{
+            marginTop: '1rem',
             padding: '0.75rem 1.5rem',
             backgroundColor: '#007bff',
             color: 'white',
@@ -85,6 +95,18 @@ export default function BNBCheckApp() {
         </button>
       </form>
 
+      {error && (
+        <div
+          style={{
+            marginTop: '1rem',
+            color: 'red',
+            fontWeight: 'bold',
+          }}
+        >
+          ⚠️ {error}
+        </div>
+      )}
+
       {loading && (
         <div style={{ marginTop: '1.5rem', fontSize: '1rem', color: '#888' }}>
           ⏳ Checking rules...
@@ -98,7 +120,6 @@ export default function BNBCheckApp() {
             fontWeight: 'bold',
             fontSize: '1.1rem',
             color: '#27ae60',
-            lineHeight: '1.4',
           }}
         >
           {result}
